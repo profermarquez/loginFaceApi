@@ -9,24 +9,24 @@ $(document).ready(function () {
     ]).then(start)
 
     function getLabels(){return ['Sebastian','Cris Holzer'];}
-    
     function start() {
-        navigator.getUserMedia(
+        var strea =navigator.getUserMedia(
             { 
-                video:{} 
+                audio: false,video:{} 
             },
             stream => video.srcObject = stream,
             err => console.error(err)
         )
 
-        recognizeFaces();
+        recognizeFaces(strea);
     }
 //evento click
     $("#login").click(function() {
         $( "#videoInput" ).show( 200 );
+        $( "#login").hide();
     });
 
-    async function recognizeFaces() {
+    async function recognizeFaces(strea) {
     
         const labeledDescriptors = await loadLabeledImages()
         const labels = getLabels();
@@ -52,14 +52,17 @@ $(document).ready(function () {
                         results.forEach( (result, i) => 
                         {
                             const box = resizedDetections[i].detection.box
+                            if(result.distance>0.5){
                             labels.forEach((text,i) =>
                                 {
                                     if(text === result.label)
                                     {
-                                        mensajeBienvenido(text);return;
+                                        mensajeBienvenido(text,strea);return;
                                     }
                                 }
                             )
+
+                            }//porcentaje mayor a 50%
                         }) 
                     
                     }
@@ -68,15 +71,17 @@ $(document).ready(function () {
         })
     }
 
-    function mensajeBienvenido(usuario)
+    function mensajeBienvenido(usuario,strea)
     {
         $( "#videoInput").hide();
-        $( "#login").hide();
+        
         $( "#acceso").show( 200 );
         $( "span" ).text(function( index ) {
             return "Nombre del usuario: " + ( usuario );
           });
-
+        video.srcObject=null;
+          
+         
     }
 
     function loadLabeledImages() {
