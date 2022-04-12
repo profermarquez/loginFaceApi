@@ -1,4 +1,5 @@
 # loginFaceApi
+First you must execute npm install comannd
 the app alows to login only with your face.
 they uses the face-api.js
 
