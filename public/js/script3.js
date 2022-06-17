@@ -8,7 +8,7 @@ $(document).ready(function () {
         faceapi.nets.ssdMobilenetv1.loadFromUri('./models') 
     ]).then(start)
 
-    function getLabels(){return ['Sebastian','Cris Holzer'];}
+    function getLabels(){return ['Sebastian'];}
     function start() {
         var strea =navigator.getUserMedia(
             { 
